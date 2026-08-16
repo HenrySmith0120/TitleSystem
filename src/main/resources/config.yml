@@ -12,10 +12,9 @@ language: zh_CN
 
 # 数据存储（HikariCP 连接池）
 storage:
-  # sqlite 或 mysql（驱动由 Paper libraries 动态加载；sqlite 为本地文件，不产生任何网络连接）
+  # sqlite 或 mysql（两种驱动均由 Paper 服务端内置；sqlite 为本地文件，不产生任何网络连接）
   type: sqlite
   mysql:
-    driver: mysql            # 驱动选择：mysql（官方驱动，默认）/ mariadb（MariaDB Java Client）
     host: localhost
     port: 3306
     database: titlesystem

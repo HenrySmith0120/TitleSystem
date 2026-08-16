@@ -51,8 +51,7 @@ public final class DatabaseManager {
     public void init() throws SQLException {
         HikariConfig hc = new HikariConfig();
         if (storage.type().equalsIgnoreCase("mysql")) {
-            // 驱动按 config.yml 的 storage.mysql.driver 选择（均由 Paper libraries 动态加载，无需反射）：
-            //   mysql（默认）= MySQL 官方驱动 com.mysql.cj.jdbc.Driver
+            // MySQL 官方驱动 com.mysql.cj.jdbc.Driver（由 Paper 服务端内置，无需打包/声明）
             hc.setDriverClassName("com.mysql.cj.jdbc.Driver");
             hc.setJdbcUrl("jdbc:mysql://" + storage.host() + ":" + storage.port() + "/" + storage.database()
                     + "?useSSL=" + storage.useSsl()

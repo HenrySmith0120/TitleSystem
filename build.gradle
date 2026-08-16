@@ -75,3 +75,13 @@ processResources {
         expand props
     }
 }
+
+// 成品 jar 直接输出到工作区根目录（便于取用部署）
+tasks.named('shadowJar') {
+    doLast {
+        copy {
+            from archiveFile
+            into file('..')
+        }
+    }
+}

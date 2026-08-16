@@ -3,8 +3,8 @@
 开源、无混淆、可审计的 Minecraft 称号系统插件，功能对标 PlayerTitle，面向 **Paper 1.21.8** 及其分支（Leaves 等，基于 Paper API 的实现）开发。
 
 - 包名：`com.henry.title`
-- API 版本：`1.21.8`（Paper API 1.21.8 / Minecraft 1.21.8）
-- 构建要求：**JDK 21** + Maven 3.8+
+- API 版本：`1.21.11`（Paper API 1.21.11 / Minecraft 1.21.11）
+- 构建要求：**JDK 25** + Gradle（wrapper 已内置）
 - 许可证：MIT
 
 ## 功能特性
@@ -38,38 +38,29 @@
 ## 自行构建
 
 ```bash
-mvn clean package
-# 产物: target/TitleSystem-1.0.0.jar（纯插件 jar，约 80KB；数据库依赖由 Paper libraries 动态加载）
+gradlew build
+# 产物: build/libs/*-all.jar（shadow 已内嵌并重定位 HikariCP）
 ```
 
 依赖仓库全部公开可审计：
 
 | 依赖 | 来源 | 说明 |
 | --- | --- | --- |
-| io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT | Paper 官方仓库 | provided，服务端提供 |
+| io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT | Paper 官方仓库 | provided，服务端提供 |
 | net.kyori:adventure-*:4.24.0 | Maven Central | provided，Paper 自带 |
 | com.github.MilkBowl:VaultAPI:1.7.1 | JitPack（构建官方 MilkBowl/VaultAPI 公开源码） | 仅编译期，不打包 |
 | me.clip:placeholderapi:2.11.6 | PlaceholderAPI 官方仓库 | provided |
-| HikariCP 6.3.0 / sqlite-jdbc 3.50.1.0 / mysql-connector-j 8.4.0 / mariadb-java-client 3.5.10 | Maven Central | provided，运行时由 Paper libraries 动态加载 |
+| HikariCP 6.3.0 | Maven Central | implementation，shadow 打包并重定位到 com.henry.title.libs.hikari |
+| sqlite-jdbc / mysql-connector-j（SQLite / MySQL 驱动） | Maven Central | 不声明——由 Paper 服务端内置提供 |
 
-> 若坚持不使用 JitPack：删除 pom 中 VaultAPI 依赖与 `hook/EconomyHook.java`、`gui/ShopGui.java` 中的经济调用即可（免费称号不受影响）。可选 PlayerPoints 依赖片段已注释在 pom.xml 中。
+> 若坚持不使用 JitPack：删除 build.gradle 中 VaultAPI 依赖与 `hook/EconomyHook.java`、`gui/ShopGui.java` 中的经济调用即可（免费称号不受影响）。
 
-### 依赖加载方式（动态驱动 + Paper libraries）
+### 依赖加载方式（驱动随服务端内置 + HikariCP shadow 打包）
 
-数据库相关依赖（HikariCP / SQLite / MySQL / MariaDB 驱动）在 pom 中为 `provided` 作用域——**不打进插件 jar**（成品仅约 80KB），改由 Paper 官方 `libraries` 机制在运行时加载：
+- **SQLite / MySQL 驱动**：Paper 服务端已内置（官方 paper-server 构建文件包含 sqlite-jdbc 与 mysql-connector-j 的 runtimeOnly 依赖），插件直接使用，零打包、零下载；
+- **HikariCP 连接池**：由 Gradle Shadow 打包进插件 jar，并重定位到 `com.henry.title.libs.hikari`（避免与其他插件冲突）；
+- **驱动选择**：`storage.type` 支持 `sqlite | mysql` 两种平级模式，`/title reload` 生效；驱动类名仅作为 HikariCP 的字符串配置传入，零反射；
 
-```yaml
-# plugin.yml
-libraries:
-  - com.zaxxer:HikariCP:6.3.0
-  - org.xerial:sqlite-jdbc:3.50.1.0
-  - com.mysql:mysql-connector-j:8.4.0
-  - org.mariadb.jdbc:mariadb-java-client:3.5.10
-```
-
-- **驱动选择（动态驱动）**：config.yml 的 `storage.mysql.driver` 选择 `mysql`（官方驱动，默认）或 `mariadb`（MariaDB Java Client，兼容 MySQL/MariaDB），`/title reload` 生效；驱动类名仅作为 HikariCP 的字符串配置传入，无反射；
-- **首次启动**：Paper 自动从 Maven 仓库解析并下载这些库（约 20MB，含 sqlite-jdbc 全平台原生库），缓存到**服务端根目录 `libraries/`** 文件夹（Maven 目录结构）；之后重启不再联网；
-- **完全离线部署**：先在一台联网机器上启动一次拿到缓存，或手动将 jar 放入 `<服务端>/libraries/<groupId>/<artifactId>/<version>/<artifactId>-<version>.jar`；
 ## 命令与权限
 
 | 命令 | 权限 | 说明 |
@@ -144,7 +135,7 @@ format: "%titlesystem_title% <player_name> %message%"
 - 粒子：`Particle` 枚举 + `World#spawnParticle` 泛型重载（DustOptions 颜色）。
 - CustomModelData：1.21.4+ 数据组件 API（`ItemStack#setData` + `DataComponentTypes.CUSTOM_MODEL_DATA`），不使用弃用的 `ItemMeta#setCustomModelData(Integer)`。
 - 插件版本读取：`Plugin#getPluginMeta()`（不使用弃用的 getDescription()）。
-- 数据库：HikariCP 连接池 + 全 PreparedStatement；驱动由 Paper libraries 动态加载，按 config 选择 SQLite / MySQL 官方 / MariaDB。
+- 数据库：HikariCP 连接池（shadow 打包并重定位）+ 全 PreparedStatement；`storage.type` 平级选择 SQLite / MySQL（驱动均由 Paper 服务端内置）。
 
 ## 已知局限
 

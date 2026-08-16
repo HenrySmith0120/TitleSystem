@@ -415,7 +415,6 @@ public final class ConfigManager {
         ConfigurationSection p = s == null ? null : s.getConfigurationSection("pool");
         return new StorageConfig(
                 type,
-                m == null ? "mysql" : m.getString("driver", "mysql"),
                 m == null ? "localhost" : m.getString("host", "localhost"),
                 m == null ? 3306 : m.getInt("port", 3306),
                 m == null ? "titlesystem" : m.getString("database", "titlesystem"),

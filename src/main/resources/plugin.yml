@@ -1,7 +1,7 @@
 name: TitleSystem
 main: com.henry.title.TitleSystem
 version: '${version}'
-api-version: '1.21.8'
+api-version: '1.21.11'
 
 description: 开源称号系统（Title System），支持称号购买/穿戴/展示/Buff/粒子/多语言
 authors: [Henry]

@@ -5,11 +5,10 @@
 ## [1.0.0] - 当前版本
 
 ### 最新变更：动态驱动加载（Paper libraries）
-
-- **feat**：数据库相关依赖（HikariCP 6.3.0 / SQLite 驱动 / MySQL 官方驱动 / MariaDB 客户端）不再打进插件 jar，改为 `provided` 作用域 + `plugin.yml` 的 `libraries` 声明，由 Paper 启动时自动解析下载并缓存至服务端根目录 `libraries/` 文件夹（支持离线预置）；插件 jar 由 5.74MB 缩减至约 77KB。
-- **feat**：新增 `storage.mysql.driver` 配置项（`mysql` 官方驱动，默认 / `mariadb` MariaDB Java Client），实现运行时驱动切换，`/title reload` 生效；驱动类名仅作为 HikariCP 字符串配置传入，**零反射**。
-- **chore**：移除 maven-shade-plugin（全部依赖由 Paper/服务端提供）。
-- **docs**：README 新增「依赖加载方式（动态驱动 + Paper libraries）」：驱动切换、首次下载缓存位置、完全离线部署（预置 jar 路径）说明。
+- **chore**：构建体系由 Maven 迁移为 Gradle（Shadow 打包 + run-paper 本地测试），编译目标 Paper API 1.21.11 / Java 25。
+- **feat**：HikariCP 随插件打包并重定位到 `com.henry.title.libs.hikari`；SQLite / MySQL 驱动不再打包或声明——均由 Paper 服务端内置提供。
+- **fix**：移除 mariadb 选项及 `storage.mysql.driver` 死配置，`storage.type` 仅保留 `sqlite | mysql` 两种平级模式。
+- **docs**：README 依赖说明与构建命令同步为 Gradle 版本。
 
 ### 上一版本：驱动名实一致与打包
 
