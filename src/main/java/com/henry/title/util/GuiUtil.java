@@ -82,6 +82,7 @@ public final class GuiUtil {
         for (String line : decoration.lore()) {
             lore.add(TextUtil.parse(line, null, Map.of()));
         }
+        meta.setHideTooltip(true);
         meta.lore(lore);
         item.setItemMeta(meta);
         return item;
