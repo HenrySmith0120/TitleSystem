@@ -1,0 +1,68 @@
+# TitleSystem English language file (local file, no remote resources)
+prefix: "&8[&6TitleSystem&8] &r"
+no-permission: "%prefix%&cYou don't have permission to do this!"
+player-only: "%prefix%&cThis command can only be run by a player!"
+player-not-found: "%prefix%&cPlayer &e%player%&c not found!"
+title-not-found: "%prefix%&cTitle &e%title%&c does not exist!"
+invalid-number: "%prefix%&c&e%number%&c is not a valid number!"
+data-loading: "%prefix%&cData is loading, please try again later!"
+usage: "%prefix%&eUsage: &f%usage%"
+
+command:
+  reload-success: "%prefix%&aConfiguration reloaded!"
+  list-header: "%prefix%&eTitle list &f(%page%/%pages%)&e:"
+  list-empty: "%prefix%&cNo titles configured!"
+  list-item: " &7- &r%title% &7Price: &e%price% &7Duration: &e%duration%"
+
+give:
+  success: "%prefix%&aGave title &r%title%&a to &e%player%&a, duration: &e%duration%!"
+  extended: "%prefix%&aRefreshed title &r%title%&a for &e%player%&a, new duration: &e%duration%!"
+
+remove:
+  success: "%prefix%&aRemoved title &r%title%&a from &e%player%&a!"
+  not-owned: "%prefix%&cPlayer &e%player%&c does not own title &e%title%&c!"
+
+clear:
+  success: "%prefix%&aCleared all titles of &e%player%&a!"
+
+shop:
+  title: "&8Title Shop"
+  bought: "%prefix%&aPurchased! Title &r%title%&a has been added to your chest!"
+  bought-free: "%prefix%&aYou claimed the free title &r%title%&a!"
+  already-owned: "%prefix%&cYou already own this title!"
+  no-money: "%prefix%&cNot enough money! Requires &e%price%&c!"
+  no-economy: "%prefix%&cNo economy service found (requires Vault + an economy plugin like EssentialsX/CMI), paid titles are disabled!"
+  owned-lore: "&a✔ Owned"
+  price-lore: "&ePrice: &6%price%"
+  duration-lore: "&eDuration: &6%duration%"
+  click-buy: "&7&oClick to buy"
+
+chest:
+  title: "&8Title Chest"
+  empty: "&cYou don't have any titles yet!"
+  equipped: "%prefix%&aEquipped title &r%title%&a!"
+  unequipped: "%prefix%&aUnequipped title &r%title%&a!"
+  expired: "%prefix%&cTitle &e%title%&c has expired and was removed!"
+  active-lore: "&a&l✔ Equipped"
+  click-toggle: "&7&oClick to equip / unequip"
+  acquire-lore: "&7Acquired: &f%time%"
+  expire-lore: "&7Remaining: &f%time%"
+  permanent: "&7Duration: &fPermanent"
+time:
+  permanent: "Permanent"
+  day: "d"
+  hour: "h"
+  minute: "m"
+  second: "s"
+  expired: "Expired"
+
+gui:
+  prev-page: "&7Previous"
+  next-page: "&7Next"
+  close: "&cClose"
+  first-page: "%prefix%&eYou are already on the first page!"
+  last-page: "%prefix%&eYou are already on the last page!"
+  head-name: "&6%player%"
+  head-balance: "&7Balance: &e%balance%"
+  head-balance-none: "&7Balance: &cNo economy plugin"
+  head-owned: "&7Titles owned: &e%count%"

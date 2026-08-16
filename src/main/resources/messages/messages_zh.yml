@@ -1,0 +1,68 @@
+# TitleSystem 中文语言文件（本地文件，不下载任何远程资源）
+prefix: "&8[&6称号系统&8] &r"
+no-permission: "%prefix%&c你没有权限执行此操作!"
+player-only: "%prefix%&c该命令只能由玩家执行!"
+player-not-found: "%prefix%&c找不到玩家 &e%player%&c!"
+title-not-found: "%prefix%&c称号 &e%title% &c不存在!"
+invalid-number: "%prefix%&c&e%number% &c不是有效的数字!"
+data-loading: "%prefix%&c数据加载中，请稍后再试!"
+usage: "%prefix%&e用法: &f%usage%"
+
+command:
+  reload-success: "%prefix%&a配置已重新加载!"
+  list-header: "%prefix%&e称号列表 &f(%page%/%pages%)&e:"
+  list-empty: "%prefix%&c暂无称号!"
+  list-item: " &7- &r%title% &7价格: &e%price% &7有效期: &e%duration%"
+
+give:
+  success: "%prefix%&a已给予玩家 &e%player% &a称号 &r%title%&a, 有效期: &e%duration%!"
+  extended: "%prefix%&a已为玩家 &e%player% &a刷新称号 &r%title%&a, 新有效期: &e%duration%!"
+
+remove:
+  success: "%prefix%&a已移除玩家 &e%player% &a的称号 &r%title%&a!"
+  not-owned: "%prefix%&c玩家 &e%player% &c未拥有称号 &e%title%&c!"
+
+clear:
+  success: "%prefix%&a已清空玩家 &e%player% &a的所有称号!"
+
+shop:
+  title: "&8称号商店"
+  bought: "%prefix%&a购买成功! 称号 &r%title% &a已放入仓库!"
+  bought-free: "%prefix%&a已领取免费称号 &r%title%&a!"
+  already-owned: "%prefix%&c你已经拥有该称号!"
+  no-money: "%prefix%&c金币不足! 需要 &e%price%&c!"
+  no-economy: "%prefix%&c未检测到经济服务(需要 Vault + 经济插件如 EssentialsX/CMI), 无法购买付费称号!"
+  owned-lore: "&a✔ 已拥有"
+  price-lore: "&e价格: &6%price%"
+  duration-lore: "&e有效期: &6%duration%"
+  click-buy: "&7&o点击购买"
+
+chest:
+  title: "&8称号仓库"
+  empty: "&c你还没有任何称号!"
+  equipped: "%prefix%&a已穿戴称号 &r%title%&a!"
+  unequipped: "%prefix%&a已卸下称号 &r%title%&a!"
+  expired: "%prefix%&c称号 &e%title% &c已过期, 已被自动移除!"
+  active-lore: "&a&l✔ 穿戴中"
+  click-toggle: "&7&o点击穿戴/卸下"
+  acquire-lore: "&7获得时间: &f%time%"
+  expire-lore: "&7剩余时间: &f%time%"
+  permanent: "&7有效期: &f永久"
+time:
+  permanent: "永久"
+  day: "天"
+  hour: "小时"
+  minute: "分"
+  second: "秒"
+  expired: "已过期"
+
+gui:
+  prev-page: "&7上一页"
+  next-page: "&7下一页"
+  close: "&c关闭"
+  first-page: "%prefix%&e已经是第一页了!"
+  last-page: "%prefix%&e已经是最后一页了!"
+  head-name: "&6%player%"
+  head-balance: "&7余额: &e%balance%"
+  head-balance-none: "&7余额: &c未安装经济插件"
+  head-owned: "&7拥有称号: &e%count%"

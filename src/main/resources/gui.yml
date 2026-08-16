@@ -1,0 +1,48 @@
+# ============================================================
+#  TitleSystem 称号系统 - GUI 配置文件（称号商店 / 称号仓库）
+#  所有文本支持 "&" 颜色代码；物品使用 Material 枚举名
+# ============================================================
+
+# GUI 标题（支持 & 颜色代码）
+shop-title: "&8称号商店"   # 商店 GUI 标题
+chest-title: "&8称号仓库"  # 仓库 GUI 标题
+
+# 商店 GUI（slot 范围 0~53；称号物品会自动避开按钮/装饰槽位）
+shop:
+  items-start-slot: 0      # 称号物品起始槽位
+  items-slots: 45          # 每页最多展示的称号数量
+  player-head-slot: 45     # 左下角玩家信息头颅（ID/余额/拥有称号数）
+  prev-slot: 48            # 上一页按钮
+  next-slot: 50            # 下一页按钮
+  close-slot: 53           # 关闭按钮（右下角）
+  prev-item: ARROW         # 上一页按钮物品
+  next-item: ARROW         # 下一页按钮物品
+  close-item: BARRIER      # 关闭按钮物品
+  page-indicator-slot: 49  # 页码指示器槽位（上一页与下一页之间）
+  page-indicator-item: NETHER_STAR            # 页码指示器物品（下界之星）
+  page-indicator-name: "&e第 &f%page% &e/ &f%pages% &e页"   # 占位符：%page%=当前页 %pages%=总页数
+  decoration:
+    slots: [46, 47, 51, 52]                 # 装饰槽位（留空 [] 表示不装饰）
+    material: GRAY_STAINED_GLASS_PANE       # 装饰材质
+    name: " "                               # 名称（默认一个空格）
+    lore: " "                               # lore（默认一个空格）
+
+# 称号仓库 GUI（结构同商店）
+chest:
+  items-start-slot: 0      # 称号物品起始槽位
+  items-slots: 45          # 每页最多展示的称号数量
+  player-head-slot: 45     # 左下角玩家信息头颅（ID/余额/拥有称号数）
+  prev-slot: 48            # 上一页按钮
+  next-slot: 50            # 下一页按钮
+  close-slot: 53           # 关闭按钮（右下角）
+  prev-item: ARROW         # 上一页按钮物品
+  next-item: ARROW         # 下一页按钮物品
+  close-item: BARRIER      # 关闭按钮物品
+  page-indicator-slot: 49  # 页码指示器槽位
+  page-indicator-item: NETHER_STAR            # 页码指示器物品（下界之星）
+  page-indicator-name: "&e第 &f%page% &e/ &f%pages% &e页"
+  decoration:
+    slots: [46, 47, 51, 52]                 # 装饰槽位（留空 [] 表示不装饰）
+    material: GRAY_STAINED_GLASS_PANE       # 装饰材质
+    name: " "                               # 名称（默认一个空格）
+    lore: " "                               # lore（默认一个空格）

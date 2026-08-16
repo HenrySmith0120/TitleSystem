@@ -1,0 +1,129 @@
+# ============================================================
+#  TitleSystem 称号系统 - 称号定义文件
+#  根键为称号 ID（顺序即商店展示顺序）
+#
+#  字段说明：
+#    display        - 展示文本（经 %titlesystem_title% 等 PAPI 变量输出，支持 & 颜色代码）
+#    name           - GUI 物品名称
+#    lore           - GUI 物品描述（商店展示用）
+#    material       - 图标材质（org.bukkit.Material 枚举名）
+#    model-data     - 可选，CustomModelData（0 = 不使用）
+#    price          - 商店价格（0 或省略 = 免费）
+#    permission     - 可选，购买所需权限节点（不填则无需权限）
+#    duration-days  - 商店购买有效期（天），-1 = 永久
+#    buffs          - 穿戴 Buff（可选）
+#      potions        - 原版药水效果（PotionEffectType，1.21 注册表解析）：
+#                         effect         = 药水效果 ID（SPEED/JUMP_BOOST/INFESTED/OOZING...）
+#                         amplifier      = 等级（从 0 开始，0 = 等级 I）
+#                         ambient        = 是否环境效果
+#                         show-particles = 是否显示药水粒子
+#                         show-icon      = 是否显示图标
+#      attributes     - 属性加成（org.bukkit.attribute.Attribute 1.21.2+ 现代名称）：
+#                         attribute = MAX_HEALTH / ATTACK_DAMAGE / MOVEMENT_SPEED / ARMOR ...
+#                         amount    = 数值（如 MAX_HEALTH +4.0 = +2 颗心）
+#                         operation = ADD_NUMBER / ADD_SCALAR / MULTIPLY_SCALAR_1（Operation 枚举）
+#                         slot      = ANY/HAND/MAINHAND/OFFHAND/FEET/LEGS/CHEST/HEAD/BODY/ARMOR
+#    particle       - 粒子特效（可选，org.bukkit.Particle 枚举，兼容 1.21 新粒子）：
+#                         type       = 粒子名（FLAME/DRAGON_BREATH/DUST/TRIAL_OMEN...）
+#                         count      = 数量
+#                         offset     = 扩散范围
+#                         extra      = 速度
+#                         data-color = DUST/REDSTONE 类粒子的颜色 #RRGGBB（仅这类粒子需要）
+#                         data-size  = DUST 类粒子大小
+# ============================================================
+
+vip:
+  display: "&6[&eVIP&6]"
+  name: "&6[&eVIP&6]"
+  lore:
+    - "&7尊贵的 VIP 称号"
+    - "&e价格: &6100 金币"
+    - "&e有效期: &630 天"
+    - "&eBuff: &f速度 I"
+  material: GOLD_INGOT
+  price: 100.0
+  permission: title.buy.vip
+  duration-days: 30
+  buffs:
+    potions:
+      - effect: SPEED
+        amplifier: 0
+        ambient: false
+        show-particles: false
+        show-icon: true
+
+svip:
+  display: "&b[&fSVIP&b]"
+  name: "&b[&fSVIP&b]"
+  lore:
+    - "&7至尊 SVIP 称号"
+    - "&e价格: &6500 金币"
+    - "&e有效期: &6永久"
+    - "&eBuff: &f速度 II + 生命上限 +2"
+    - "&e粒子: &f龙息"
+  material: DIAMOND
+  price: 500.0
+  permission: title.buy.svip
+  duration-days: -1
+  buffs:
+    potions:
+      - effect: SPEED
+        amplifier: 1
+        ambient: false
+        show-particles: false
+        show-icon: true
+    attributes:
+      - attribute: MAX_HEALTH
+        amount: 4.0
+        operation: ADD_NUMBER
+        slot: ANY
+  particle:
+    type: DRAGON_BREATH
+    count: 3
+    offset: 0.3
+    extra: 0.02
+
+mvp:
+  display: "&c[&6&lMVP&c]"
+  name: "&c[&6&lMVP&c]"
+  lore:
+    - "&7最强 MVP 称号"
+    - "&e价格: &61000 金币"
+    - "&e有效期: &6永久"
+    - "&eBuff: &f跳跃提升 II + 攻击伤害 +2"
+    - "&e粒子: &f橙色光点"
+  material: NETHERITE_INGOT
+  price: 1000.0
+  permission: title.buy.mvp
+  duration-days: -1
+  buffs:
+    potions:
+      - effect: JUMP_BOOST
+        amplifier: 1
+        ambient: false
+        show-particles: false
+        show-icon: true
+    attributes:
+      - attribute: ATTACK_DAMAGE
+        amount: 2.0
+        operation: ADD_NUMBER
+        slot: ANY
+  particle:
+    type: DUST
+    count: 5
+    offset: 0.4
+    extra: 1.0
+    data-color: "#FF5500"
+    data-size: 1.2
+
+newbie:
+  display: "&7[&a新人&7]"
+  name: "&7[&a新人&7]"
+  lore:
+    - "&7初来乍到的新人称号"
+    - "&e价格: &6免费"
+    - "&e有效期: &6永久"
+  material: WHEAT
+  price: 0.0
+  permission: title.buy.newbie
+  duration-days: -1

@@ -1,0 +1,37 @@
+# ============================================================
+#  TitleSystem 称号系统 - 主配置文件
+#  GUI 相关设置见 gui.yml；称号定义见 titles.yml
+#  适配 Paper 1.21.8+（Paper API 1.21.8 / Minecraft 1.21.8）
+# ============================================================
+
+# 配置版本号：插件启动时用于一次性自动迁移旧配置，请勿手动修改
+config-version: 4
+
+# 语言: zh_CN 或 en_US（对应 messages/messages_zh.yml、messages/messages_en.yml）
+language: zh_CN
+
+# 数据存储（HikariCP 连接池）
+storage:
+  # sqlite 或 mysql（sqlite 为本地文件，不产生任何网络连接）
+  type: sqlite
+  mysql:
+    host: localhost
+    port: 3306
+    database: titlesystem
+    username: root
+    password: "123456"
+    use-ssl: false
+  pool:
+    maximum-pool-size: 10
+    minimum-idle: 2
+    connection-timeout-ms: 5000
+    idle-timeout-ms: 600000
+    max-lifetime-ms: 1800000
+
+# 自动清理过期称号（异步定时任务）
+auto-clean:
+  enabled: true
+  interval-seconds: 60
+
+# 粒子任务周期（tick，20 = 1 秒），为佩戴粒子称号的玩家刷新粒子
+particle-task-interval: 20
