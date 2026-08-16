@@ -1,21 +1,11 @@
 name: TitleSystem
 main: com.henry.title.TitleSystem
-version: '${project.version}'
+version: '${version}'
 api-version: '1.21.8'
-
-# 运行时依赖（Paper libraries 机制，1.19.3+）：驱动与连接池不打进插件 jar，
-# Paper 启动时会自动解析并下载一次，缓存到服务端根目录 libraries/ 文件夹（Maven 目录结构），之后可离线启动。
-# 完全离线部署：预先将对应 jar 放入
-#   <服务端>/libraries/<groupId>/<artifactId>/<version>/<artifactId>-<version>.jar
-libraries:
-  - com.zaxxer:HikariCP:6.3.0
-  - org.xerial:sqlite-jdbc:3.50.1.0
-  - com.mysql:mysql-connector-j:8.4.0
-  - org.mariadb.jdbc:mariadb-java-client:3.5.10
 
 description: 开源称号系统（Title System），支持称号购买/穿戴/展示/Buff/粒子/多语言
 authors: [Henry]
-website: https://github.com/
+website: https://github.com/HenrySmith0120/TitleSystem
 
 # 本插件不使用 NMS、不使用反射、不发起任何外部网络请求。
 softdepend: [Vault, PlaceholderAPI, SuperTrails, PlayerParticles]
