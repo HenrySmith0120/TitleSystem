@@ -14,7 +14,7 @@ softdepend: [Vault, PlaceholderAPI, SuperTrails, PlayerParticles]
 commands:
   title:
     description: 称号系统主命令
-    usage: /title <shop|chest|give|remove|clear|list|reload|help>
+    usage: /title <shop|menu|give|remove|clear|list|reload|help>
     aliases: [titles, chenghao]
     permission: title.use
     permission-message: 你没有权限使用该命令!
@@ -24,7 +24,7 @@ permissions:
     description: 使用 /title 命令
     default: true
   title.user:
-    description: 使用玩家功能（shop / chest）
+    description: 使用玩家功能（shop / menu）
     default: true
   title.admin:
     description: 使用管理员功能（give / remove / clear / list / reload）

@@ -24,7 +24,7 @@ import java.util.concurrent.CompletableFuture;
  * /title 命令执行器。
  * 命令本体与权限节点均在 plugin.yml 声明（无隐藏命令），此处只做分发与参数校验。
  * 子命令：
- *   玩家:   shop / chest
+ *   玩家:   shop / menu
  *   管理员: give <玩家> <称号ID> [天数] / remove <玩家> <称号ID> / clear <玩家> / list [页] / reload
  */
 public final class TitleCommand implements CommandExecutor, TabCompleter {
@@ -45,7 +45,7 @@ public final class TitleCommand implements CommandExecutor, TabCompleter {
         }
         switch (args[0].toLowerCase()) {
             case "shop" -> cmdShop(sender);
-            case "chest" -> cmdChest(sender);
+            case "menu" -> cmdMenu(sender);
             case "give" -> cmdGive(sender, args);
             case "remove" -> cmdRemove(sender, args);
             case "clear" -> cmdClear(sender, args);
@@ -69,7 +69,7 @@ public final class TitleCommand implements CommandExecutor, TabCompleter {
         ShopGui.open(plugin, player, 0);
     }
 
-    private void cmdChest(CommandSender sender) {
+    private void cmdMenu(CommandSender sender) {
         Player player = requirePlayer(sender);
         if (player == null || !hasPerm(sender, "title.user")) return;
         if (plugin.getTitleManager().getData(player.getUniqueId()) == null) {
@@ -246,8 +246,8 @@ public final class TitleCommand implements CommandExecutor, TabCompleter {
 
     private void sendUsage(CommandSender sender) {
         String usage = sender.hasPermission("title.admin")
-                ? "/title shop|chest|give <玩家> <ID> [天数]|remove <玩家> <ID>|clear <玩家>|list [页]|reload"
-                : "/title shop|chest";
+                ? "/title shop|menu|give <玩家> <ID> [天数]|remove <玩家> <ID>|clear <玩家>|list [页]|reload"
+                : "/title shop|menu";
         plugin.getMessageManager().send(sender, "usage", Map.of("usage", usage));
     }
 
@@ -284,7 +284,7 @@ public final class TitleCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            List<String> subs = new ArrayList<>(List.of("shop", "chest", "help"));
+            List<String> subs = new ArrayList<>(List.of("shop", "menu", "help"));
             if (sender.hasPermission("title.admin")) {
                 subs.addAll(List.of("give", "remove", "clear", "list", "reload"));
             }
