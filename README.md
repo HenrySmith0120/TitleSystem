@@ -12,7 +12,7 @@
 - 称号数据存储：**SQLite / MySQL 双模式**（HikariCP 连接池，config.yml 一键切换）
 - 数据模型：玩家 UUID、称号 ID、获得时间、过期时间（支持永久/限时）、是否激活
 - 管理员命令：give / remove / clear / list / reload
-- 玩家命令：shop（商店 GUI）/ chest（仓库 GUI）
+- 玩家命令：shop（商店 GUI）/ menu（仓库 GUI）
 - 商店 GUI：分页展示、名称/描述/价格、Vault 金币购买、已拥有标注、自动存入仓库
 - 仓库 GUI：已拥有称号列表、点击穿戴/卸下、显示**真实**获得时间与剩余时间（不显示商店营销文案）
 - GUI 可自定义：商店与仓库的标题（& 颜色代码）、槽位布局、翻页/关闭按钮物品、下界之星页码指示器（%page%/%pages%）、玻璃板装饰均可通过 `gui.yml` 配置
@@ -66,7 +66,7 @@ gradlew build
 | 命令 | 权限 | 说明 |
 | --- | --- | --- |
 | /title shop | title.user | 打开称号商店 |
-| /title chest | title.user | 打开称号仓库 |
+| /title menu | title.user | 打开称号仓库 |
 | /title give <玩家> <称号ID> [天数] | title.admin | 给予称号（缺省天数=永久） |
 | /title remove <玩家> <称号ID> | title.admin | 移除称号 |
 | /title clear <玩家> | title.admin | 清空玩家全部称号 |
