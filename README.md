@@ -25,7 +25,7 @@
 
 ## 快速安装
 
-1. 将 `target/TitleSystem-1.0.0.jar` 放入服务端 `plugins/` 目录（jar 约 70KB；数据库驱动与连接池由 Paper 在**首次启动时自动下载缓存一次**，详见下文「依赖加载方式」）；
+1. 将 `target/TitleSystem-1.0.0.jar` 放入服务端 `plugins/` 目录（jar 约 80KB；数据库驱动与连接池由 Paper 在**首次启动时自动下载缓存一次**，详见下文「依赖加载方式」）；
 2. （可选）安装 [Vault](https://www.spigotmc.org/resources/vault.34315/) **以及**一个经济插件（如 [EssentialsX](https://essentialsx.net/)、CMI 等）→ 启用金币购买。
    > 注意：Vault 只是 API 桥梁，不提供经济数据；只装 Vault 时插件会提示「已检测到 Vault，但未发现经济服务」。
    > 经济插件晚于本插件启用也没关系——购买时会惰性重试检测，并自动接上。
@@ -39,7 +39,7 @@
 
 ```bash
 mvn clean package
-# 产物: target/TitleSystem-1.0.0.jar（纯插件 jar，约 70KB；数据库依赖由 Paper libraries 加载）
+# 产物: target/TitleSystem-1.0.0.jar（纯插件 jar，约 80KB；数据库依赖由 Paper libraries 动态加载）
 ```
 
 依赖仓库全部公开可审计：
@@ -50,28 +50,26 @@ mvn clean package
 | net.kyori:adventure-*:4.24.0 | Maven Central | provided，Paper 自带 |
 | com.github.MilkBowl:VaultAPI:1.7.1 | JitPack（构建官方 MilkBowl/VaultAPI 公开源码） | 仅编译期，不打包 |
 | me.clip:placeholderapi:2.11.6 | PlaceholderAPI 官方仓库 | provided |
-| HikariCP 6.3.0 / sqlite-jdbc 3.50.1.0 / mariadb-java-client 3.5.10 | Maven Central | provided，运行时由 Paper libraries 加载 |
+| HikariCP 6.3.0 / sqlite-jdbc 3.50.1.0 / mysql-connector-j 8.4.0 / mariadb-java-client 3.5.10 | Maven Central | provided，运行时由 Paper libraries 动态加载 |
 
 > 若坚持不使用 JitPack：删除 pom 中 VaultAPI 依赖与 `hook/EconomyHook.java`、`gui/ShopGui.java` 中的经济调用即可（免费称号不受影响）。可选 PlayerPoints 依赖片段已注释在 pom.xml 中。
 
-### 依赖加载方式（provided + Paper libraries）
+### 依赖加载方式（动态驱动 + Paper libraries）
 
-数据库相关依赖（HikariCP / SQLite 驱动 / MariaDB 驱动）在 pom 中为 `provided` 作用域——**不打进插件 jar**（成品仅约 70KB），改由 Paper 官方 `libraries` 机制在运行时加载：
+数据库相关依赖（HikariCP / SQLite / MySQL / MariaDB 驱动）在 pom 中为 `provided` 作用域——**不打进插件 jar**（成品仅约 80KB），改由 Paper 官方 `libraries` 机制在运行时加载：
 
 ```yaml
 # plugin.yml
 libraries:
   - com.zaxxer:HikariCP:6.3.0
   - org.xerial:sqlite-jdbc:3.50.1.0
+  - com.mysql:mysql-connector-j:8.4.0
   - org.mariadb.jdbc:mariadb-java-client:3.5.10
 ```
 
-- **首次启动**：Paper 自动从 Maven 仓库解析并下载这三个库（约 15MB，含 sqlite-jdbc 全平台原生库），缓存到**服务端根目录 `libraries/`** 文件夹（Maven 目录结构）；之后重启不再联网。
-- **完全离线部署**：先在一台联网机器上启动一次拿到缓存，或手动将 jar 放入
-  `<服务端>/libraries/<groupId>/<artifactId>/<version>/<artifactId>-<version>.jar`，例如
-  `libraries/org/xerial/sqlite-jdbc/3.50.1.0/sqlite-jdbc-3.50.1.0.jar`。
-- **想要零联网的单一 fat-jar（旧方案）**：把 pom 中这三个依赖的 `<scope>provided</scope>` 去掉、重新 `mvn package` 即可（shade 会重新内嵌，成品约 4MB；如需进一步裁剪 sqlite 平台，可加回 `org.xerial:sqlite-jdbc` 的 shade filter）。
-
+- **驱动选择（动态驱动）**：config.yml 的 `storage.mysql.driver` 选择 `mysql`（官方驱动，默认）或 `mariadb`（MariaDB Java Client，兼容 MySQL/MariaDB），`/title reload` 生效；驱动类名仅作为 HikariCP 的字符串配置传入，无反射；
+- **首次启动**：Paper 自动从 Maven 仓库解析并下载这些库（约 20MB，含 sqlite-jdbc 全平台原生库），缓存到**服务端根目录 `libraries/`** 文件夹（Maven 目录结构）；之后重启不再联网；
+- **完全离线部署**：先在一台联网机器上启动一次拿到缓存，或手动将 jar 放入 `<服务端>/libraries/<groupId>/<artifactId>/<version>/<artifactId>-<version>.jar`；
 ## 命令与权限
 
 | 命令 | 权限 | 说明 |
@@ -87,30 +85,29 @@ libraries:
 ### GUI 配置（gui.yml）
 
 ```yaml
-gui:
-  shop-title: "&8称号商店"   # GUI 标题（支持 & 颜色代码）
-  chest-title: "&8称号仓库"
-  shop:            # 商店 GUI（chest 结构相同）
-    items-start-slot: 0      # 称号物品起始槽位
-    items-slots: 45          # 每页最多称号数量
-    player-head-slot: 45     # 左下角玩家信息头颅（ID/余额/拥有称号数）
-    prev-slot: 48            # 上一页按钮
-    next-slot: 50            # 下一页按钮
-    close-slot: 53           # 关闭按钮（右下角）
-    prev-item: ARROW         # 上一页按钮物品（Material 枚举名）
-    next-item: ARROW
-    close-item: BARRIER
-    page-indicator-slot: 49  # 页码指示器槽位（上一页与下一页之间）
-    page-indicator-item: NETHER_STAR          # 页码指示器物品（下界之星）
-    page-indicator-name: "&e第 &f%page% &e/ &f%pages% &e页"  # %page%=当前页 %pages%=总页数
-    decoration:              # 玻璃板装饰
-      slots: [46, 47, 51, 52]                 # 装饰槽位（留空 [] 表示不装饰）
-      material: GRAY_STAINED_GLASS_PANE
-      name: " "              # 默认一个空格
-      lore: " "              # 默认一个空格
+shop-title: "&8称号商店"   # GUI 标题（支持 & 颜色代码）
+chest-title: "&8称号仓库"
+shop:            # 商店 GUI（chest 结构相同）
+  items-start-slot: 0      # 称号物品起始槽位
+  items-slots: 45          # 每页最多称号数量
+  player-head-slot: 45     # 左下角玩家信息头颅（ID/余额/拥有称号数）
+  prev-slot: 48            # 上一页按钮
+  next-slot: 50            # 下一页按钮
+  close-slot: 53           # 关闭按钮（右下角）
+  prev-item: ARROW         # 上一页按钮物品（Material 枚举名）
+  next-item: ARROW
+  close-item: BARRIER
+  page-indicator-slot: 49  # 页码指示器槽位（上一页与下一页之间）
+  page-indicator-item: NETHER_STAR          # 页码指示器物品（下界之星）
+  page-indicator-name: "&e第 &f%page% &e/ &f%pages% &e页"  # %page%=当前页 %pages%=总页数
+  decoration:              # 玻璃板装饰
+    slots: [46, 47, 51, 52]                 # 装饰槽位（留空 [] 表示不装饰）
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "              # 默认一个空格
+    lore: " "              # 默认一个空格
 ```
 
-> 按钮槽位相互冲突时以配置顺序为准。
+> 按钮槽位相互冲突时以配置顺序为准。上一页/下一页按钮始终显示；点击边界页会提示「已经是第一页/最后一页」（gui.first-page / gui.last-page 多语言键）。
 
 购买权限节点 `title.buy.<称号ID>`（示例称号已内置），称号配置不填 permission 则购买无需权限。全部命令与权限均在 plugin.yml 声明，无隐藏命令。
 
@@ -147,6 +144,7 @@ format: "%titlesystem_title% <player_name> %message%"
 - 粒子：`Particle` 枚举 + `World#spawnParticle` 泛型重载（DustOptions 颜色）。
 - CustomModelData：1.21.4+ 数据组件 API（`ItemStack#setData` + `DataComponentTypes.CUSTOM_MODEL_DATA`），不使用弃用的 `ItemMeta#setCustomModelData(Integer)`。
 - 插件版本读取：`Plugin#getPluginMeta()`（不使用弃用的 getDescription()）。
+- 数据库：HikariCP 连接池 + 全 PreparedStatement；驱动由 Paper libraries 动态加载，按 config 选择 SQLite / MySQL 官方 / MariaDB。
 
 ## 已知局限
 
@@ -177,6 +175,7 @@ TaskUtils.runTimerAsync(player, "shop", () -> MenuManager.refresh(player, "shop"
 旧版 `BukkitScheduler#runTask*` 在 Folia 上不可用，请统一使用本工具类；插件卸载时 Paper 会自动取消全局/异步任务，实体任务随实体退役自动清理。
 
 插件内部已全部迁移到 TaskUtils：称号粒子循环=实体调度器、过期称号自动清理=异步调度器、数据加载回调=实体/全局调度器（Folia 兼容，项目内已无 BukkitScheduler 调用）。
+
 ## 项目结构
 
 ```
@@ -191,8 +190,8 @@ TitleSystem/
 │   ├── hook/                     # EconomyHook(Vault) / PlaceholderHook(PAPI)
 │   ├── listener/                 # PlayerListener / GuiListener
 │   ├── manager/                  # TitleManager / BuffManager / ParticleManager
-│   ├── model/                    # ConfiguredTitle / TitleBuff / AttributeSpec / ParticleConfig
-│   └── util/                     # TextUtil / GuiUtil
+│   ├── model/                    # ConfiguredTitle / TitleBuff / AttributeSpec / ParticleConfig / GuiLayout / GuiStyle / GuiDecoration
+│   └── util/                     # TextUtil / GuiUtil / TaskUtils
 └── src/main/resources/
     ├── plugin.yml
     ├── config.yml                # 主配置（语言/存储/自动清理/粒子周期）
