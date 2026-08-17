@@ -109,14 +109,6 @@ shop:            # 商店 GUI（chest 结构相同）
 - `%titlesystem_title_id%`：当前称号 ID（如 `vip`）
 - `%titlesystem_owned_count%`：拥有的称号数量
 
-示例——ChatControl 的聊天格式配置：
-
-```yaml
-format: "%titlesystem_title% <player_name> %message%"
-```
-
-示例——TAB 插件：把 `%titlesystem_title%` 加入 tagprefix / customtabname / belowname 等即可实现 Tab 前缀与头顶称号。
-
 ## 安全与审计承诺
 
 1. **无外部网络请求**：插件代码不发起任何 HTTP 请求；SQLite 模式全程零网络（MySQL 连接目标为管理员在 config.yml 中显式配置的数据库主机）。
