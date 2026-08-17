@@ -31,7 +31,7 @@ shop:
   bought-free: "%prefix%&aYou claimed the free title &r%title%&a!"
   already-owned: "%prefix%&cYou already own this title!"
   no-money: "%prefix%&cNot enough money! Requires &e%price%&c!"
-  no-economy: "%prefix%&cNo economy service found (requires Vault + an economy plugin like EssentialsX/CMI), paid titles are disabled!"
+  no-economy: "%prefix%&cNo economy service found (requires Vault + an economy plugin like EssentialsX/CMI), the title shop is unavailable!"
   owned-lore: "&a✔ Owned"
   price-lore: "&ePrice: &6%price%"
   duration-lore: "&eDuration: &6%duration%"

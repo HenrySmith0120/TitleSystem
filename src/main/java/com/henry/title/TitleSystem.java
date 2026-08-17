@@ -40,6 +40,14 @@ public final class TitleSystem extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        // 0. 必需依赖检查：称号展示完全依赖 PlaceholderAPI 变量，缺失则拒绝启动
+        // （plugin.yml 已声明 depend: [PlaceholderAPI]，此处为兜底防御）
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) {
+            getLogger().severe("缺少必需依赖 PlaceholderAPI，插件无法启动。请先安装 PlaceholderAPI。");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
         // 1. 配置与语言（本地文件）
         saveDefaultConfig();
         this.configManager = new ConfigManager(this);

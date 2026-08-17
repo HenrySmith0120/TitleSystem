@@ -3,7 +3,7 @@
 开源、无混淆、可审计的 Minecraft 称号系统插件，功能对标 PlayerTitle，面向 **Paper 1.21.8** 及其分支（Leaves 等，基于 Paper API 的实现）开发。
 
 - 包名：`com.henry.title`
-- API 版本：`1.21.8`（Paper API 1.21.8 / Minecraft 1.21.8）
+- API 版本：`1.21.8`（Paper API 1.21.8）
 - 构建要求：**JDK 25** + Gradle（wrapper 已内置）
 - 许可证：MIT
 
@@ -13,7 +13,7 @@
 - 数据模型：玩家 UUID、称号 ID、获得时间、过期时间（支持永久/限时）、是否激活
 - 管理员命令：give / remove / clear / list / reload
 - 玩家命令：shop（商店 GUI）/ menu（仓库 GUI）
-- 商店 GUI：分页展示、名称/描述/价格、Vault 金币购买、已拥有标注、自动存入仓库
+- 商店 GUI：分页展示、名称/描述/价格、Vault 金币购买、已拥有标注、自动存入仓库（未检测到经济服务时商店不可用）
 - 仓库 GUI：已拥有称号列表、点击穿戴/卸下、显示**真实**获得时间与剩余时间（不显示商店营销文案）
 - GUI 可自定义：商店与仓库的标题（& 颜色代码）、槽位布局、翻页/关闭按钮物品、下界之星页码指示器（%page%/%pages%）、玻璃板装饰均可通过 `gui.yml` 配置
 - 称号展示：插件**不内置**聊天/Tab/头顶显示，统一通过 PlaceholderAPI 变量（%titlesystem_title% 等）交给聊天/Tab 插件渲染
@@ -25,11 +25,10 @@
 
 ## 快速安装
 
-1. 将 `target/TitleSystem-1.0.0.jar` 放入服务端 `plugins/` 目录（jar 约 80KB；数据库驱动与连接池由 Paper 在**首次启动时自动下载缓存一次**，详见下文「依赖加载方式」）；
+1. 安装 [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/)（**必需依赖**：称号展示完全依赖 PAPI 变量，未安装时插件拒绝启动）；
 2. （可选）安装 [Vault](https://www.spigotmc.org/resources/vault.34315/) **以及**一个经济插件（如 [EssentialsX](https://essentialsx.net/)、CMI 等）→ 启用金币购买。
-   > 注意：Vault 只是 API 桥梁，不提供经济数据；只装 Vault 时插件会提示「已检测到 Vault，但未发现经济服务」。
-   > 经济插件晚于本插件启用也没关系——购买时会惰性重试检测，并自动接上。
-3. （可选）安装 [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/) → 启用 PAPI 占位符；
+   > 注意：Vault 只是 API 桥梁，不提供经济数据；**未检测到经济服务时「称号商店」菜单不可用**（免费称号也无法领取），装好经济插件后自动恢复（惰性重试检测，无需重启）。
+3. 将插件本体放入服务端 `plugins/` 目录（jar 约 250KB；SQLite/MySQL 驱动由 Paper 服务端内置、HikariCP 已随插件打包，全程零联网）；
 4. 启动服务端，按需编辑 `plugins/TitleSystem/` 下的配置文件后执行 `/titles reload`：
    - `config.yml`（主配置：语言/存储/自动清理/粒子周期）
    - `gui.yml`（GUI 标题/布局/页码指示器/装饰）
@@ -49,11 +48,11 @@ gradlew build
 | io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT | Paper 官方仓库 | provided，服务端提供 |
 | net.kyori:adventure-*:4.24.0 | Maven Central | provided，Paper 自带 |
 | com.github.MilkBowl:VaultAPI:1.7.1 | JitPack（构建官方 MilkBowl/VaultAPI 公开源码） | 仅编译期，不打包 |
-| me.clip:placeholderapi:2.11.6 | PlaceholderAPI 官方仓库 | provided |
+| me.clip:placeholderapi:2.11.6 | PlaceholderAPI 官方仓库 | provided（depend 声明，**必需依赖**） |
 | HikariCP 6.3.0 | Maven Central | implementation，shadow 打包并重定位到 com.henry.title.libs.hikari |
 | sqlite-jdbc / mysql-connector-j（SQLite / MySQL 驱动） | Maven Central | 不声明——由 Paper 服务端内置提供 |
 
-> 若坚持不使用 JitPack：删除 build.gradle 中 VaultAPI 依赖与 `hook/EconomyHook.java`、`gui/ShopGui.java` 中的经济调用即可（免费称号不受影响）。
+> 若坚持不使用 JitPack：删除 build.gradle 中 VaultAPI 依赖与 `hook/EconomyHook.java`、`gui/ShopGui.java` 中的经济调用即可（此时称号商店将不可用，其余功能不受影响）。
 
 ### 依赖加载方式（驱动随服务端内置 + HikariCP shadow 打包）
 
@@ -121,7 +120,7 @@ format: "%titlesystem_title% <player_name> %message%"
 ## 安全与审计承诺
 
 1. **无外部网络请求**：插件代码不发起任何 HTTP 请求；SQLite 模式全程零网络（MySQL 连接目标为管理员在 config.yml 中显式配置的数据库主机）。
-2. **无反射 / 无远程代码**：不使用反射加载任何类，不使用 URLClassLoader，不使用 Runtime.exec / ProcessBuilder；Vault / PlaceholderAPI 均为显式插件检测 + 官方 API 调用。
+2. **无反射 / 无远程代码**：不使用反射加载任何类，不使用 URLClassLoader，不使用 Runtime.exec / ProcessBuilder；PlaceholderAPI 通过 depend 声明为必需依赖，Vault 为显式插件检测 + 官方 API 调用。
 3. **无隐藏命令**：所有命令与权限节点均在 plugin.yml 声明。
 4. **全 PreparedStatement**：所有数据库 DML 一律参数化查询，无 DROP TABLE / TRUNCATE；删除仅按 UUID/称号ID 精确执行且命令层已做权限校验。
 5. **全本地资源**：配置与语言文件全部本地读取，不下载任何远程内容。
@@ -144,7 +143,7 @@ format: "%titlesystem_title% <player_name> %message%"
 ## 可选扩展
 
 - **SuperTrails / PlayerParticles 粒子联动**：插件启动时会自动检测这两个插件是否存在。本版本使用内置原版粒子引擎（默认回退）；如需深度联动，可参照 `hook/EconomyHook.java` 的"显式检测 + 官方 API"模式，添加其官方 API 依赖并实现一个 Hook 类（不涉及反射）。
-- **PlayerPoints 点数购买**：pom.xml 中已注释依赖片段，取消注释后按同样模式实现 PointHook 即可。
+- **PlayerPoints 点数购买**：参照 VaultAPI 的模式在 build.gradle 添加依赖并实现 PointHook 即可。
 
 ## 调度器工具类（兼容 Folia）
 
@@ -171,7 +170,9 @@ TaskUtils.runTimerAsync(player, "shop", () -> MenuManager.refresh(player, "shop"
 
 ```
 TitleSystem/
-├── pom.xml
+├── build.gradle
+├── settings.gradle
+├── gradlew / gradlew.bat / gradle/wrapper/
 ├── src/main/java/com/henry/title/
 │   ├── TitleSystem.java          # 主类
 │   ├── command/TitleCommand.java # /titles 命令（plugin.yml 声明）

@@ -7,6 +7,9 @@
 ### 最新变更：动态驱动加载（Paper libraries）
 
 - **change**：主命令由 `/title` 改为 `/titles`，移除 `title` 与 `chenghao` 别名。
+- **change**：PlaceholderAPI 改为**必需依赖**（plugin.yml depend 声明 + 启动时兜底校验），缺失时插件拒绝启动。
+- **change**：未检测到经济服务（Vault + 经济插件缺失）时**禁用称号商店菜单**，提示「商店暂不可用」；经济插件装载后自动恢复（惰性重试）。
+- **docs**：README 修正旧数据（依赖加载方式、PAPI 必装说明、Gradle 项目结构）。
 - **chore**：构建体系由 Maven 迁移为 Gradle（Shadow 打包 + run-paper 本地测试），编译目标 Paper API 1.21.8 / Java 25。
 - **feat**：HikariCP 随插件打包并重定位到 `com.henry.title.libs.hikari`；SQLite / MySQL 驱动不再打包或声明——均由 Paper 服务端内置提供。
 - **fix**：移除 mariadb 选项及 `storage.mysql.driver` 死配置，`storage.type` 仅保留 `sqlite | mysql` 两种平级模式。

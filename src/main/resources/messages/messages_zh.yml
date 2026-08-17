@@ -31,7 +31,7 @@ shop:
   bought-free: "%prefix%&a已领取免费称号 &r%title%&a!"
   already-owned: "%prefix%&c你已经拥有该称号!"
   no-money: "%prefix%&c金币不足! 需要 &e%price%&c!"
-  no-economy: "%prefix%&c未检测到经济服务(需要 Vault + 经济插件如 EssentialsX/CMI), 无法购买付费称号!"
+  no-economy: "%prefix%&c未检测到经济服务(需要 Vault + 经济插件如 EssentialsX/CMI), 称号商店暂不可用!"
   owned-lore: "&a✔ 已拥有"
   price-lore: "&e价格: &6%price%"
   duration-lore: "&e有效期: &6%duration%"

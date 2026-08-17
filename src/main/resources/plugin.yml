@@ -8,7 +8,8 @@ authors: [Henry]
 website: https://github.com/HenrySmith0120/TitleSystem
 
 # 本插件不使用 NMS、不使用反射、不发起任何外部网络请求。
-softdepend: [Vault, PlaceholderAPI, SuperTrails, PlayerParticles]
+depend: [PlaceholderAPI]
+softdepend: [Vault, SuperTrails, PlayerParticles]
 
 # 所有命令与权限节点均在此声明（插件不注册任何 plugin.yml 之外的隐藏命令）
 commands:

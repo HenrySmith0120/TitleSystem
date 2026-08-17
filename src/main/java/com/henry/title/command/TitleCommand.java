@@ -62,6 +62,12 @@ public final class TitleCommand implements CommandExecutor, TabCompleter {
     private void cmdShop(CommandSender sender) {
         Player player = requirePlayer(sender);
         if (player == null || !hasPerm(sender, "title.user")) return;
+        // 未检测到经济服务（Vault + 经济插件缺失）时禁用商店菜单
+        // （isReady 会惰性重试：经济插件晚于本插件启用也能自动恢复）
+        if (!plugin.getEconomyHook().isReady()) {
+            plugin.getMessageManager().send(player, "shop.no-economy");
+            return;
+        }
         if (plugin.getTitleManager().getData(player.getUniqueId()) == null) {
             plugin.getMessageManager().send(player, "data-loading");
             return;
