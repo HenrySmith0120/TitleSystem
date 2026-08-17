@@ -7,7 +7,7 @@
 ### 最新变更：动态驱动加载（Paper libraries）
 
 - **change**：主命令由 `/title` 改为 `/titles`，移除 `title` 与 `chenghao` 别名。
-- **chore**：构建体系由 Maven 迁移为 Gradle（Shadow 打包 + run-paper 本地测试），编译目标 Paper API 1.21.11 / Java 25。
+- **chore**：构建体系由 Maven 迁移为 Gradle（Shadow 打包 + run-paper 本地测试），编译目标 Paper API 1.21.8 / Java 25。
 - **feat**：HikariCP 随插件打包并重定位到 `com.henry.title.libs.hikari`；SQLite / MySQL 驱动不再打包或声明——均由 Paper 服务端内置提供。
 - **fix**：移除 mariadb 选项及 `storage.mysql.driver` 死配置，`storage.type` 仅保留 `sqlite | mysql` 两种平级模式。
 - **docs**：README 依赖说明与构建命令同步为 Gradle 版本。

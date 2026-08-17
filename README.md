@@ -3,7 +3,7 @@
 开源、无混淆、可审计的 Minecraft 称号系统插件，功能对标 PlayerTitle，面向 **Paper 1.21.8** 及其分支（Leaves 等，基于 Paper API 的实现）开发。
 
 - 包名：`com.henry.title`
-- API 版本：`1.21.11`（Paper API 1.21.11 / Minecraft 1.21.11）
+- API 版本：`1.21.8`（Paper API 1.21.8 / Minecraft 1.21.8）
 - 构建要求：**JDK 25** + Gradle（wrapper 已内置）
 - 许可证：MIT
 
@@ -46,7 +46,7 @@ gradlew build
 
 | 依赖 | 来源 | 说明 |
 | --- | --- | --- |
-| io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT | Paper 官方仓库 | provided，服务端提供 |
+| io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT | Paper 官方仓库 | provided，服务端提供 |
 | net.kyori:adventure-*:4.24.0 | Maven Central | provided，Paper 自带 |
 | com.github.MilkBowl:VaultAPI:1.7.1 | JitPack（构建官方 MilkBowl/VaultAPI 公开源码） | 仅编译期，不打包 |
 | me.clip:placeholderapi:2.11.6 | PlaceholderAPI 官方仓库 | provided |
