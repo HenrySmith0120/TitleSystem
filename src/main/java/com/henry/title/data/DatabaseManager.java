@@ -151,7 +151,7 @@ public final class DatabaseManager {
     }
 
     /**
-     * 清空某玩家全部称号记录（仅管理员 /title clear 触发，已做权限校验）。
+     * 清空某玩家全部称号记录（仅管理员 /titles clear 触发，已做权限校验）。
      */
     public void clearPlayerTitles(UUID uuid) throws SQLException {
         try (Connection c = dataSource.getConnection();

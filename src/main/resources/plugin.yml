@@ -12,16 +12,15 @@ softdepend: [Vault, PlaceholderAPI, SuperTrails, PlayerParticles]
 
 # 所有命令与权限节点均在此声明（插件不注册任何 plugin.yml 之外的隐藏命令）
 commands:
-  title:
+  titles:
     description: 称号系统主命令
-    usage: /title <shop|menu|give|remove|clear|list|reload|help>
-    aliases: [titles, chenghao]
+    usage: /titles <shop|menu|give|remove|clear|list|reload|help>
     permission: title.use
     permission-message: 你没有权限使用该命令!
 
 permissions:
   title.use:
-    description: 使用 /title 命令
+    description: 使用 /titles 命令
     default: true
   title.user:
     description: 使用玩家功能（shop / menu）

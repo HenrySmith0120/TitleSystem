@@ -95,9 +95,9 @@ public final class TitleSystem extends JavaPlugin {
         pm.registerEvents(new PlayerListener(this), this);
         pm.registerEvents(new GuiListener(this), this);
 
-        // 6. 命令（仅 plugin.yml 声明的 /title）
+        // 6. 命令（仅 plugin.yml 声明的 /titles）
         TitleCommand command = new TitleCommand(this);
-        var cmd = getCommand("title");
+        var cmd = getCommand("titles");
         if (cmd != null) {
             cmd.setExecutor(command);
             cmd.setTabCompleter(command);

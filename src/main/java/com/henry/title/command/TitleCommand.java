@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * /title 命令执行器。
+ * /titles 命令执行器。
  * 命令本体与权限节点均在 plugin.yml 声明（无隐藏命令），此处只做分发与参数校验。
  * 子命令：
  *   玩家:   shop / menu
@@ -84,7 +84,7 @@ public final class TitleCommand implements CommandExecutor, TabCompleter {
     private void cmdGive(CommandSender sender, String[] args) {
         if (!hasPerm(sender, "title.admin")) return;
         if (args.length < 3) {
-            plugin.getMessageManager().send(sender, "usage", Map.of("usage", "/title give <玩家> <称号ID> [天数]"));
+            plugin.getMessageManager().send(sender, "usage", Map.of("usage", "/titles give <玩家> <称号ID> [天数]"));
             return;
         }
         String playerName = args[1];
@@ -135,7 +135,7 @@ public final class TitleCommand implements CommandExecutor, TabCompleter {
     private void cmdRemove(CommandSender sender, String[] args) {
         if (!hasPerm(sender, "title.admin")) return;
         if (args.length < 3) {
-            plugin.getMessageManager().send(sender, "usage", Map.of("usage", "/title remove <玩家> <称号ID>"));
+            plugin.getMessageManager().send(sender, "usage", Map.of("usage", "/titles remove <玩家> <称号ID>"));
             return;
         }
         String playerName = args[1];
@@ -171,7 +171,7 @@ public final class TitleCommand implements CommandExecutor, TabCompleter {
     private void cmdClear(CommandSender sender, String[] args) {
         if (!hasPerm(sender, "title.admin")) return;
         if (args.length < 2) {
-            plugin.getMessageManager().send(sender, "usage", Map.of("usage", "/title clear <玩家>"));
+            plugin.getMessageManager().send(sender, "usage", Map.of("usage", "/titles clear <玩家>"));
             return;
         }
         String playerName = args[1];
@@ -246,8 +246,8 @@ public final class TitleCommand implements CommandExecutor, TabCompleter {
 
     private void sendUsage(CommandSender sender) {
         String usage = sender.hasPermission("title.admin")
-                ? "/title shop|menu|give <玩家> <ID> [天数]|remove <玩家> <ID>|clear <玩家>|list [页]|reload"
-                : "/title shop|menu";
+                ? "/titles shop|menu|give <玩家> <ID> [天数]|remove <玩家> <ID>|clear <玩家>|list [页]|reload"
+                : "/titles shop|menu";
         plugin.getMessageManager().send(sender, "usage", Map.of("usage", usage));
     }
 

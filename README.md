@@ -30,7 +30,7 @@
    > 注意：Vault 只是 API 桥梁，不提供经济数据；只装 Vault 时插件会提示「已检测到 Vault，但未发现经济服务」。
    > 经济插件晚于本插件启用也没关系——购买时会惰性重试检测，并自动接上。
 3. （可选）安装 [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/) → 启用 PAPI 占位符；
-4. 启动服务端，按需编辑 `plugins/TitleSystem/` 下的配置文件后执行 `/title reload`：
+4. 启动服务端，按需编辑 `plugins/TitleSystem/` 下的配置文件后执行 `/titles reload`：
    - `config.yml`（主配置：语言/存储/自动清理/粒子周期）
    - `gui.yml`（GUI 标题/布局/页码指示器/装饰）
    - `titles.yml`（称号定义）
@@ -59,19 +59,19 @@ gradlew build
 
 - **SQLite / MySQL 驱动**：Paper 服务端已内置（官方 paper-server 构建文件包含 sqlite-jdbc 与 mysql-connector-j 的 runtimeOnly 依赖），插件直接使用，零打包、零下载；
 - **HikariCP 连接池**：由 Gradle Shadow 打包进插件 jar，并重定位到 `com.henry.title.libs.hikari`（避免与其他插件冲突）；
-- **驱动选择**：`storage.type` 支持 `sqlite | mysql` 两种平级模式，`/title reload` 生效；驱动类名仅作为 HikariCP 的字符串配置传入，零反射；
+- **驱动选择**：`storage.type` 支持 `sqlite | mysql` 两种平级模式，`/titles reload` 生效；驱动类名仅作为 HikariCP 的字符串配置传入，零反射；
 
 ## 命令与权限
 
 | 命令 | 权限 | 说明 |
 | --- | --- | --- |
-| /title shop | title.user | 打开称号商店 |
-| /title menu | title.user | 打开称号仓库 |
-| /title give <玩家> <称号ID> [天数] | title.admin | 给予称号（缺省天数=永久） |
-| /title remove <玩家> <称号ID> | title.admin | 移除称号 |
-| /title clear <玩家> | title.admin | 清空玩家全部称号 |
-| /title list [页] | title.admin | 列出所有称号 |
-| /title reload | title.admin | 重载配置 |
+| /titles shop | title.user | 打开称号商店 |
+| /titles menu | title.user | 打开称号仓库 |
+| /titles give <玩家> <称号ID> [天数] | title.admin | 给予称号（缺省天数=永久） |
+| /titles remove <玩家> <称号ID> | title.admin | 移除称号 |
+| /titles clear <玩家> | title.admin | 清空玩家全部称号 |
+| /titles list [页] | title.admin | 列出所有称号 |
+| /titles reload | title.admin | 重载配置 |
 
 ### GUI 配置（gui.yml）
 
@@ -174,7 +174,7 @@ TitleSystem/
 ├── pom.xml
 ├── src/main/java/com/henry/title/
 │   ├── TitleSystem.java          # 主类
-│   ├── command/TitleCommand.java # /title 命令（plugin.yml 声明）
+│   ├── command/TitleCommand.java # /titles 命令（plugin.yml 声明）
 │   ├── config/                   # ConfigManager / MessageManager / StorageConfig
 │   ├── data/                     # DatabaseManager（HikariCP+PreparedStatement）/ TitleEntry
 │   ├── gui/                      # ShopGui / ChestGui / GuiHolder
